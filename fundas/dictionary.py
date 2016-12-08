@@ -35,23 +35,27 @@ def remove_age_detail(person):
     return person
 
 
-def add_marks(person, **kwargs):
+def add_subjects(person, **kwargs):
     """ added more elements to the dictionary """
-    if 'marks' in person:
-        person['marks'].update(kwargs)
+    if 'subjects' in person:
+        person['subjects'].update(kwargs)
         #  if using a list instead of set.
-        #  person['marks'].update(kwargs)
+        #  person['subjects'].update(kwargs)
     else:
-        person['marks'] = kwargs
+        person['subjects'] = kwargs
 
     return person
 
 
+def get_average_marks(all_subjects):
+    return float(sum(all_subjects[d] for d in all_subjects)) / len(all_subjects)
+
+
 def get_person_marks(person, desc=True):
-        return sorted(person['aaa'].items(), key=lambda x: -x[1] if desc else x[1])
+        return sorted(person['subjects'].items(), key=lambda x: -x[1] if desc else x[1])
 
         # another way of doing this same
-        # return sorted(person['marks'].items(), key=lambda x: -x[1] * (-1 if desc else 1))
+        # return sorted(person['subjects'].items(), key=lambda x: -x[1] * (-1 if desc else 1))
 
 
 def person_details():
@@ -59,14 +63,15 @@ def person_details():
     person = add_more_details_about_person(person, address='London', status='Single')
     person = add_friends(person, 'Marry', 'Martin', 'Martin')
     person = remove_age_detail(person)
-    person = add_marks(person, English=25, Maths=75)
-    person = add_marks(person, Science=100, Marketing=50)
+    person = add_subjects(person, English=25, Maths=75)
+    person = add_subjects(person, Science=100, Marketing=50)
 
     for about_person in person:
         print(about_person, person[about_person])
 
     try:
         print(get_person_marks(person, True))
+        print('Marks Average in all subjects: {}'.format(get_average_marks(person['subjects'])))
     except KeyError as e:
         print('There is no such key: {}'.format(e))
 
