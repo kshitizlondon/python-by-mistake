@@ -9,7 +9,7 @@ def create_new_person():
     return {
         'name': 'John',
         'age': 17,
-        'friends': ['Ram', 'Sham', 'Deny', 'Kartik']
+        'friends': set(['Ram', 'Sham', 'Deny', 'Kartik'])  # set avoids any duplicate values.
     }
 
 
@@ -23,7 +23,7 @@ def add_more_details_about_person(person, **kwargs):
 def add_friends(person, *args):
     if 'friends' in person:
         for new_friend in args:
-            person['friends'].append(new_friend)
+            person['friends'].add(new_friend)
 
     return person
 
@@ -39,22 +39,36 @@ def add_marks(person, **kwargs):
     """ added more elements to the dictionary """
     if 'marks' in person:
         person['marks'].update(kwargs)
+        #  if using a list instead of set.
+        #  person['marks'].update(kwargs)
     else:
         person['marks'] = kwargs
 
     return person
 
 
+def get_person_marks(person, desc=True):
+        return sorted(person['aaa'].items(), key=lambda x: -x[1] if desc else x[1])
+
+        # another way of doing this same
+        # return sorted(person['marks'].items(), key=lambda x: -x[1] * (-1 if desc else 1))
+
+
 def person_details():
     person = create_new_person()
     person = add_more_details_about_person(person, address='London', status='Single')
-    person = add_friends(person, 'Marry', 'Martin')
+    person = add_friends(person, 'Marry', 'Martin', 'Martin')
     person = remove_age_detail(person)
-    person = add_marks(person, English=50, Maths=100)
-    person = add_marks(person, Science=50, Marketing=100)
+    person = add_marks(person, English=25, Maths=75)
+    person = add_marks(person, Science=100, Marketing=50)
 
     for about_person in person:
         print(about_person, person[about_person])
+
+    try:
+        print(get_person_marks(person, True))
+    except KeyError as e:
+        print('There is no such key: {}'.format(e))
 
 
 if __name__ == '__main__':
